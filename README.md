@@ -94,7 +94,7 @@ So we can use attribute selector instead of element selector to remove duplicati
 </li>
 ```
 
-## Supporting Content Projection with Multiple Slots
+## Supporting Content Projection with Multiple Slots and more ng-content features
 
 Instead of using @Inputs for each markup place, we can just use ng-content
 
@@ -125,4 +125,54 @@ and then add span icon into templates
 <button appButton>Logout
     <span class="icon">→</span>
 </button>
+```
+
+<hr>
+
+If we do not want to have a span or other elements outside of component, we can move it to our inside component template
+
+```
+<span>
+    <ng-content />
+</span>
+
+<span class="icon">
+    <ng-content select=".icon" />
+</span>
+```
+
+```
+<button appButton>
+    Logout
+    <span class="icon">→</span>
+</button>
+```
+
+But then, we will have a duplication in DOM again. To remove duplication we can use ngProjectAs attribute
+
+`<span ngProjectAs="icon">→</span>`
+
+```
+<span class="icon">
+    <ng-content select="icon" />
+</span>
+```
+
+<hr>
+
+You can use fallbacks in ng-content
+
+`<ng-content select="icon">→</ng-content>`
+
+In that case if no icon provided, it will use fallback icon → instead
+
+<hr>
+
+If we want restrict what can be insterted in ng-content, we can use select. You can specify multiple selectors separated by comma
+
+```
+<p>
+    <label>{{ label }}</label>
+    <ng-content select="input, textarea" />
+</p>
 ```
