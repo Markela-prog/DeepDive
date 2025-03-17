@@ -32,6 +32,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## When to split up components
 
+Up to you!
+
+1) Separation of Concerns (Every component should only do "one thing")
+2) Simplicity and Code Colocation
+
 ## Extend built-in component
 
 Your component elements do end up in the real DOM!
