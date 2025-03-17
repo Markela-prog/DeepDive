@@ -93,3 +93,36 @@ So we can use attribute selector instead of element selector to remove duplicati
     <button appButton></button>
 </li>
 ```
+
+## Supporting Content Projection with Multiple Slots
+
+Instead of using @Inputs for each markup place, we can just use ng-content
+
+```
+<span>
+    <ng-content />
+</span>
+<span class="icon">
+    <ng-content />
+</span>
+```
+
+`<button appButton>Logout →</button>`
+
+But its not right, because everything will be rendered in second span. Angular does not which content should go where, so we have to tell him by adding select attribute. Selector wants a css selector
+
+```
+<span>
+    <ng-content />
+</span>
+
+<ng-content select=".icon" />
+```
+
+and then add span icon into templates
+
+```
+<button appButton>Logout
+    <span class="icon">→</span>
+</button>
+```
