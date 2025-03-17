@@ -181,6 +181,58 @@ If we want restrict what can be insterted in ng-content, we can use select. You 
     <ng-content select="input, textarea" />
 </p>
 ```
+## Encapsulation
+
+None
+
+- Disables style scoping
+
+The Shadow DOM
+
+- A browser feature that allows you to attach hidden DOM structures to DOM elements. 
+- For CSS styling, the Shadow DOM can be used to scope CSS styles to that hidden tree - instead of applying styles globally to the entire page
+- Angular can emulate this Shadow DOM broswer feature for its own components
+
+Emulated (default)
+
+
+```
+enum ViewEncapsulation {
+    Emulated = 0,
+    None = 2,
+    ShadowDom = 3
+}
+```
+
+Internally, the pre-defined allowed values map to integers which can be used by Angular as identifiers
+
+```
+@Component({
+  selector: 'app-control',
+  standalone: true,
+  imports: [],
+  templateUrl: './control.component.html',
+  styleUrl: './control.component.css',
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'control'
+  }
+})
+```
 
 ## Host Elements
+
+Every Angular component has a Host Element
+
+Example
+
+A component with a selector of "app-header" targets an `<app-header>` element which is rendered into the real DOM
+
+IMPORTANT: The elements targeted by your component selectors do NOT act as placeholders and are NOT replaced when the page is rendered!
+
+Instead, the selected elements are preserved and simply "enhanced" / taken over by your component logic and markup!
+
+- To target host element we use :host selector (Does allow to directly apply styles to rendered host element)
+
+- The component host element is NOT considered a part of the component template but will be affected by the (scoped) component styles via :host
 
