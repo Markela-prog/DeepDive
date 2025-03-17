@@ -176,3 +176,6 @@ If we want restrict what can be insterted in ng-content, we can use select. You 
     <ng-content select="input, textarea" />
 </p>
 ```
+
+## Host Elements
+
