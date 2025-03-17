@@ -32,3 +32,64 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## When to split up components
 
+## Extend built-in component
+
+Your component elements do end up in the real DOM!
+
+Your component elements are not compiled away or replaced with the template content by Angular, instead they are rendered to the DOM and the template content is then nested inside of them. It means we sometimes we have unnecessary element in the DOM (duplication).
+
+```
+<button>
+<span>
+    Logout
+</span>
+<span class="icon">
+    →
+</span>
+</button>
+```
+
+```
+@Component({
+  selector: 'app-button',
+  standalone: true,
+  imports: [],
+  templateUrl: './button.component.html',
+  styleUrl: './button.component.css',
+})
+```
+
+```
+<li>
+    <app-button />
+</li>
+```
+
+<br>
+
+So we can use attribute selector instead of element selector to remove duplication in the DOM
+
+```
+<span>
+    Logout
+</span>
+<span class="icon">
+    →
+</span>
+```
+
+```
+@Component({
+  selector: 'button[appButton]',
+  standalone: true,
+  imports: [],
+  templateUrl: './button.component.html',
+  styleUrl: './button.component.css',
+})
+```
+
+```
+<li>
+    <button appButton></button>
+</li>
+```
