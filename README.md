@@ -729,3 +729,30 @@ export class TicketComponent {
   }
 }
 ```
+
+## Input/Output configuration
+
+We can use alias to change input name outside of component class (in the template for example) and keep another input name inside of component class. But usually its not recommended
+
+`@Input({ required: true, alias: 'data' }) ticket?: Ticket;`
+
+Transform
+
+In output only alias available
+
+<hr>
+
+**If you want to set a custom two-way binding you should use specific output name**: inputName + Change:
+
+```
+@Input({ required: true }) size!: { width: string; height: string };
+@Output() sizeChange = new EventEmitter<{ width: string; height: string }>();
+```
+
+More modern and simplier alternative:
+
+```
+size = model.required<{ width: string; height: string }>();
+```
+
+size is a ModelSignal
