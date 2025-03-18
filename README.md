@@ -34,8 +34,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 Up to you!
 
-1) Separation of Concerns (Every component should only do "one thing")
-2) Simplicity and Code Colocation
+1. Separation of Concerns (Every component should only do "one thing")
+2. Simplicity and Code Colocation
 
 ## Extend built-in component
 
@@ -181,6 +181,7 @@ If we want restrict what can be insterted in ng-content, we can use select. You 
     <ng-content select="input, textarea" />
 </p>
 ```
+
 ## Encapsulation
 
 None
@@ -189,12 +190,11 @@ None
 
 The Shadow DOM
 
-- A browser feature that allows you to attach hidden DOM structures to DOM elements. 
+- A browser feature that allows you to attach hidden DOM structures to DOM elements.
 - For CSS styling, the Shadow DOM can be used to scope CSS styles to that hidden tree - instead of applying styles globally to the entire page
 - Angular can emulate this Shadow DOM broswer feature for its own components
 
 Emulated (default)
-
 
 ```
 enum ViewEncapsulation {
@@ -238,7 +238,7 @@ Instead, the selected elements are preserved and simply "enhanced" / taken over 
 
 **We can get rid of CSS scoping with Host Element**
 
-***- If we have a component which is not using CSS styles directly in component, instead its getting read from outside, we can set host to the component and use :host in CSS to ignore encapsulation***
+**_- If we have a component which is not using CSS styles directly in component, instead its getting read from outside, we can set host to the component and use :host in CSS to ignore encapsulation_**
 
 Instead of .dashboard-item, we use :host
 
@@ -270,7 +270,7 @@ Instead of .dashboard-item, we use :host
   imports: [],
   templateUrl: './dashboard-item.component.html',
   styleUrl: './dashboard-item.component.css',
-  
+
 })
 ```
 
@@ -302,10 +302,11 @@ export class ControlComponent {
 }
 ```
 
-Where: 
-1) ('control') is the actual property (if you want a different name for class)
-2) className is property name
-3) 'control' value for property
+Where:
+
+1. ('control') is the actual property (if you want a different name for class)
+2. className is property name
+3. 'control' value for property
 
 <hr>
 
@@ -341,7 +342,7 @@ Old and not preferable:
 ```
   host: {
     class: 'control',
-    
+
   }
 })
 export class ControlComponent {
@@ -359,5 +360,44 @@ Programmatic access to host element
 
 `private el = inject(ElementRef);`
 
-## Next
+## Class Binding
+
+You can bind class property on element dinamically
+
+Single class:
+
+`<div [class.status]="currentStatus === 'offline'">`
+
+Multiple classes:
+
+```
+<div [class.status]="{
+    status: true,
+    'status-online': currentStatus === 'online',
+    'status-offline': currentStatus === 'offline',
+    'status-unknown': currentStatus === 'unknown'
+}">
+```
+
+### Styles Binding
+
+You can also bind styles dinamically
+
+```
+<div [class.status]="{
+    status: true,
+    'status-online': currentStatus === 'online',
+    'status-offline': currentStatus === 'offline',
+    'status-unknown': currentStatus === 'unknown'
+}"
+[style]="{
+    'font-size': '64px' //or TS expression
+}">
+```
+
+## Literal Types
+
+Setting specific string values as types uses a TypeScript feature called "Literal Types". The idea is to only allow specific (string) values - instead of all strings.
+
+`currentStatus: 'online' | 'offline' | 'unknown' = 'online';`
 
