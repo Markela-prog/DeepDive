@@ -415,10 +415,9 @@ Setting specific string values as types uses a TypeScript feature called "Litera
 
 ## Component Lifecycle
 
-[Documentation](https://angular.dev/guide/components/lifecycle)
+Read Angular [Documentation](https://angular.dev/guide/components/lifecycle)
 
-
-[ExecutionOrder](https://angular.dev/guide/components/lifecycle#execution-order)
+Component lifecycle [ExecutionOrder](https://angular.dev/guide/components/lifecycle#execution-order)
 
 Use ngOnInit method instead of constructor
 
@@ -473,3 +472,61 @@ export class ServerStatusComponent implements OnInit{
 }
 ```
 
+<hr>
+
+In some cases, we have to make sure that if component will disappear, we clean up the interval whenever that component is removed. For example: if we have an interval that keeps on going behind the scenes, eventhough component is gone, you have a memory leak in application.
+
+```
+export class ServerStatusComponent implements OnInit, OnDestroy{
+  currentStatus: 'online' | 'offline' | 'unknown' = 'online';
+  private interval?: ReturnType<typeof setInterval>;
+
+  ngOnInit() {
+    this.interval = setInterval(() => {
+      const rnd = Math.random();
+      if (rnd < 0.5) {
+        this.currentStatus = 'online';
+      } else if (rnd < 0.9) {
+        this.currentStatus = 'offline';
+      } else {
+        this.currentStatus = 'unknown';
+      }
+    }, 5000);
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.interval);
+  }
+}
+```
+
+In that case we make sure that this interval gets cleaned up when componented is removed
+
+<hr>
+
+Modern alternative is to use destroyRef
+
+```
+export class ServerStatusComponent implements OnInit{
+  currentStatus: 'online' | 'offline' | 'unknown' = 'online';
+  private destroyRef = inject(DestroyRef);
+
+  ngOnInit() {
+    const interval = setInterval(() => {
+      const rnd = Math.random();
+      if (rnd < 0.5) {
+        this.currentStatus = 'online';
+      } else if (rnd < 0.9) {
+        this.currentStatus = 'offline';
+      } else {
+        this.currentStatus = 'unknown';
+      }
+    }, 5000);
+
+    this.destroyRef.onDestroy(() => {
+      clearInterval(interval);
+    })
+  }
+}
+
+```
