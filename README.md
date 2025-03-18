@@ -631,6 +631,61 @@ export class NewTicketComponent {
 }
 ```
 
-### ViewChildren and viewChildren
+## ContentChild
+
+If we use ng-content, we cannot access inputs via @ViewChild, so we use @ContentChild
+
+`<ng-content select="input, textarea" />`
+
+```
+<app-control label="Title">
+        <input name="title" id="title" #titleInput #input/>
+    </app-control>
+    <app-control label="Request">
+        <textarea name="request" id="request" rows="3" #textInput #input></textarea>
+    </app-control>
+```
+
+***NOTE***: We use same template variable #input, but it creates a different instances of the inputs (1 for input and 1 for textarea)
+
+```
+export class ControlComponent {
+  @Input({ required: true }) label!: string;
+  private el = inject(ElementRef);
+  @ContentChild('input') private control?: ElementRef<HTMLInputElement | HTMLTextAreaElement>;
+
+  onClick() {
+    console.log('Clicked!');
+    console.log(this.el);
+    console.log(this.control);
+  }
+}
+```
+
+We can also use signal there as in ViewChild
+
+<br>
+
+### ViewChildren/viewChildren and ContentChild/ContentChildren
 
 Allows to select multiple elements e.g. Multiple custom buttons
+
+<br>
+
+### ngAfterViewInit/ngAfterContentInit
+
+IF you want to use @ViewChild elements, you either use it in class methods or ngAfterViewInit, not in ngOnInit, because it will be undefined
+
+```
+private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
+  ngAfterViewInit() {
+    console.log('AFter');
+    console.log(this.form().nativeElement)
+  }
+```
+
+<br>
+
+### afterRender/afterNextREnder
+
+Refering for entire application instead of component
