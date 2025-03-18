@@ -528,5 +528,64 @@ export class ServerStatusComponent implements OnInit{
     })
   }
 }
+```
+
+<br>
+
+## Template variables
+
+Angular feature where the element to which this variable (special attribute) is added is stored in variable, and this variable is available anywhere in the template
 
 ```
+<form (ngSubmit)="onSubmit(titleInput)">
+  <app-control label="Title">
+    <input name="title" id="title" #titleInput />
+  </app-control>
+```
+
+```
+export class NewTicketComponent {
+  onSubmit(titleElement: HTMLInputElement) {
+    const enteredTitle = titleElement.value;
+    console.log(enteredTitle);
+  }
+}
+```
+
+or alternative way
+
+```
+<form (ngSubmit)="onSubmit(titleInput.value, textInput.value)">
+  <app-control label="Title">
+    <input name="title" id="title" #titleInput />
+  </app-control>
+```
+
+```
+export class NewTicketComponent {
+  onSubmit(title: string, ticketText: string) {
+    console.log(title);
+    console.log(ticketText);
+  }
+}
+```
+
+***NOTE***: If we use custom element attribute the type of template element will be not HTML element, but custom element. For example:
+
+```
+<button appButton #btn>
+    Submit
+    <span ngProjectAs="icon">⌲</span>
+</button>
+```
+
+The #btn will be a reference of ButtonComponent
+
+```
+<button #btn>
+    Submit
+    <span ngProjectAs="icon">⌲</span>
+</button>
+```
+
+And without appButton attribute it will be HTMLButtonElement
