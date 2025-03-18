@@ -689,3 +689,43 @@ private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
 ### afterRender/afterNextREnder
 
 Refering for entire application instead of component
+
+<br>
+<hr>
+
+## More about loops
+
+We can use @empty to specify a fallback code to be rendered if array is empty:
+
+```
+<div>
+    <ul>
+        @for (ticket of tickets; track ticket.id) {
+            <li>
+                <app-ticket />
+            </li>
+        } @empty {
+            <p>No tickets available.</p>
+        }
+    </ul>
+</div>
+```
+
+<br>
+
+## Updating signal values
+
+We can use update method to change signal value to the opposite by passing a function
+
+```
+export class TicketComponent {
+  @Input({ required: true }) data?: Ticket;
+
+  detailsVisible = signal(false);
+
+  onToggleDetails() {
+    //this.detailsVisible.set(!this.detailsVisible());
+    this.detailsVisible.update((wasVisible) => !wasVisible);
+  }
+}
+```
