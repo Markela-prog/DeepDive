@@ -416,6 +416,8 @@ Setting specific string values as types uses a TypeScript feature called "Litera
 ## Component Lifecycle
 
 [Documentation](https://angular.dev/guide/components/lifecycle)
+
+
 [ExecutionOrder](https://angular.dev/guide/components/lifecycle#execution-order)
 
 Use ngOnInit method instead of constructor
