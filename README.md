@@ -220,6 +220,8 @@ Internally, the pre-defined allowed values map to integers which can be used by 
 })
 ```
 
+<br>
+
 ## Host Elements
 
 Every Angular component has a Host Element
@@ -235,6 +237,8 @@ Instead, the selected elements are preserved and simply "enhanced" / taken over 
 - To target host element we use :host selector (Does allow to directly apply styles to rendered host element)
 
 - The component host element is NOT considered a part of the component template but will be affected by the (scoped) component styles via :host
+
+<hr>
 
 **We can get rid of CSS scoping with Host Element**
 
@@ -360,6 +364,8 @@ Programmatic access to host element
 
 `private el = inject(ElementRef);`
 
+<br>
+
 ## Class Binding
 
 You can bind class property on element dinamically
@@ -379,6 +385,8 @@ Multiple classes:
 }">
 ```
 
+<hr>
+
 ### Styles Binding
 
 You can also bind styles dinamically
@@ -394,6 +402,8 @@ You can also bind styles dinamically
     'font-size': '64px' //or TS expression
 }">
 ```
+
+<br>
 
 ## Literal Types
 
