@@ -570,7 +570,7 @@ export class NewTicketComponent {
 }
 ```
 
-***NOTE***: If we use custom element attribute the type of template element will be not HTML element, but custom element. For example:
+**_NOTE_**: If we use custom element attribute the type of template element will be not HTML element, but custom element. For example:
 
 ```
 <button appButton #btn>
@@ -589,3 +589,48 @@ The #btn will be a reference of ButtonComponent
 ```
 
 And without appButton attribute it will be HTMLButtonElement
+
+<hr>
+
+### @ViewChild
+
+To reset a form input fields, we can pass #form template element to submit function, and then use form.reset() function. But sometimes we cannot pass template elements into component class for some reasons, so there is a better way to do it
+
+@ViewChild is a decorator that can be used to select elements in the template of component and make them available in component class.
+
+ViewChild needs a selector as an argument (can be string (template variable name (!YOU CANT PASS CSS SELECTOR)) or class name of component e.g.(ButtonComponent, which will actually store instance of button component in property so you can interact with it))
+
+`<form (ngSubmit)="onSubmit(titleInput.value, textInput.value)" #form>`
+
+```
+export class NewTicketComponent {
+
+  @ViewChild('form') private form?: ElementRef<HTMLFormElement>;
+
+  onSubmit(title: string, ticketText: string) {
+    console.log(title);
+    console.log(ticketText);
+    this.form?.nativeElement.reset();
+  }
+}
+```
+
+Alternative using signal
+
+```
+export class NewTicketComponent {
+
+  //@ViewChild('form') private form?: ElementRef<HTMLFormElement>;
+  private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
+
+  onSubmit(title: string, ticketText: string) {
+    console.log(title);
+    console.log(ticketText);
+    this.form().nativeElement.reset();
+  }
+}
+```
+
+### ViewChildren and viewChildren
+
+Allows to select multiple elements e.g. Multiple custom buttons
