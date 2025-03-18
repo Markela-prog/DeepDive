@@ -411,3 +411,63 @@ Setting specific string values as types uses a TypeScript feature called "Litera
 
 `currentStatus: 'online' | 'offline' | 'unknown' = 'online';`
 
+<br>
+
+## Component Lifecycle
+
+[Documentation](https://angular.dev/guide/components/lifecycle)
+[ExecutionOrder](https://angular.dev/guide/components/lifecycle#execution-order)
+
+Use ngOnInit method instead of constructor
+
+Keep constructor lean and only do basic class init work (Good practice)
+
+You should prefer using ngOnInit for initialization work like setting up interval
+
+```
+ngOnInit() {
+    setInterval(() => {
+      const rnd = Math.random();
+      if (rnd < 0.5) {
+        this.currentStatus = 'online';
+      } else if (rnd < 0.9) {
+        this.currentStatus = 'offline';
+      } else {
+        this.currentStatus = 'unknown';
+      }
+    }, 5000);
+  }
+```
+
+More complex tasks like sending http requests should not go to the constructor, but into ngOnInit
+
+Difference:
+In ngOnInit Angular is done initializing component inputs, so if component receives any input values, those values will be initialized and availabe in ngOnInit
+
+<hr>
+
+We have to get rid of typos errors, as its does not handle typos error in consoles or IDE
+
+To avoid hard to debug problems its recommended to use specific TypeScript feature that is embraced by Angular by Lifecycle methods
+
+We force ourself to use OnInit interface methods
+
+```
+export class ServerStatusComponent implements OnInit{
+  currentStatus: 'online' | 'offline' | 'unknown' = 'online';
+
+  ngOnInit() {
+    setInterval(() => {
+      const rnd = Math.random();
+      if (rnd < 0.5) {
+        this.currentStatus = 'online';
+      } else if (rnd < 0.9) {
+        this.currentStatus = 'offline';
+      } else {
+        this.currentStatus = 'unknown';
+      }
+    }, 5000);
+  }
+}
+```
+
