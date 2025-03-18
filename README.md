@@ -236,3 +236,128 @@ Instead, the selected elements are preserved and simply "enhanced" / taken over 
 
 - The component host element is NOT considered a part of the component template but will be affected by the (scoped) component styles via :host
 
+**We can get rid of CSS scoping with Host Element**
+
+***- If we have a component which is not using CSS styles directly in component, instead its getting read from outside, we can set host to the component and use :host in CSS to ignore encapsulation***
+
+Instead of .dashboard-item, we use :host
+
+```
+:host {
+  display: block;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f8f8f8;
+  box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+:host header {
+  display: flex;
+  padding: 0;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+```
+
+<br>
+
+```
+@Component({
+  selector: 'app-dashboard-item',
+  standalone: true,
+  imports: [],
+  templateUrl: './dashboard-item.component.html',
+  styleUrl: './dashboard-item.component.css',
+  
+})
+```
+
+<hr>
+
+Alternative way to set host class **HostListener** and **HostBinding**
+
+New and preferable (in decorator):
+
+```
+@Component({
+  selector: 'app-control',
+  standalone: true,
+  imports: [],
+  templateUrl: './control.component.html',
+  styleUrl: './control.component.css',
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'control'
+  }
+})
+```
+
+Old and not preferable (in component class):
+
+```
+export class ControlComponent {
+  @HostBinding('control') className = 'control';
+}
+```
+
+Where: 
+1) ('control') is the actual property (if you want a different name for class)
+2) className is property name
+3) 'control' value for property
+
+<hr>
+
+We can bind a method to an event to listen
+
+New and preferable:
+
+```
+@Component({
+  selector: 'app-control',
+  standalone: true,
+  imports: [],
+  templateUrl: './control.component.html',
+  styleUrl: './control.component.css',
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'control',
+    '(click)': 'onClick()'
+  }
+})
+export class ControlComponent {
+  @HostBinding('control') className = 'control';
+
+  onClick() {
+    console.log('Clicked!');
+  }
+}
+
+```
+
+Old and not preferable:
+
+```
+  host: {
+    class: 'control',
+    
+  }
+})
+export class ControlComponent {
+  @HostBinding('control') className = 'control';
+  @HostBinding('click') onClick() {
+    console.log('Clicked!');
+  }
+
+}
+```
+
+<hr>
+
+Programmatic access to host element
+
+`private el = inject(ElementRef);`
+
+## Next
+
